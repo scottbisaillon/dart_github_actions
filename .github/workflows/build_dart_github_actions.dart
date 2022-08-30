@@ -3,7 +3,7 @@ import 'package:dart_github_actions_wrappers/dart_github_actions_wrappers.dart';
 
 void main() async {
   await Workflow(
-    name: 'dart_githib_actions',
+    name: 'dart_github_actions',
     on: [
       Push(
         branches: ['master', 'development'],

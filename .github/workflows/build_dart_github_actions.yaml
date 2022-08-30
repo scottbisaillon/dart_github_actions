@@ -1,7 +1,7 @@
 # This workflow has been generated using dart_github_actions (https://github.com/scottbisaillon/dart_github_actions).
 # All modifications should be made to 'build_dart_github_actions.dart' and the workflow regenerated.
 
-name: dart_githib_actions
+name: dart_github_actions
 on:
   push:
     branches:
