@@ -1,0 +1,49 @@
+# This workflow has been generated using dart_github_actions (https://github.com/scottbisaillon/dart_github_actions).
+# All modifications should be made to 'build_dart_github_actions.dart' and the workflow regenerated.
+
+name: dart_githib_actions
+on:
+  push:
+    branches:
+      - master
+      - development
+    paths:
+      - packages/dart_github_actions
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        id: step-0
+        uses: actions/checkout@v3
+      -
+        id: step-1
+        uses: dart-lang/setup-dart@v1
+      -
+        id: step-2
+        run: |
+            dart pub global activate coverage
+            echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+            echo "$GITHUB_WORKSPACE/_flutter/.pub-cache/bin" >> "$GITHUB_PATH"
+            echo "$GITHUB_WORKSPACE/_flutter/bin/cache/dart-sdk/bin" >> "$GITHUB_PATH"
+      -
+        id: step-3
+        name: Install Dependencies
+        run: dart pub get
+      -
+        id: step-4
+        name: Format
+        run: dart format --set-exit-if-changed .
+      -
+        id: step-5
+        name: Analyze
+        run: dart analyze --fatal-infos --fatal-warnings .
+      -
+        id: step-6
+        name: Run Tests
+        run: dart run coverage:test_with_coverage
+      -
+        id: step-7
+        uses: VeryGoodOpenSource/very_good_coverage@v1
+        with:
+          path: packages/dart_github_actions/coverage/lcov.info

@@ -1,0 +1,18 @@
+name: workflows
+description: Project for dart_github_actions workflows.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  dart_github_actions:
+    path: ../packages/dart_github_actions
+  dart_github_actions_wrappers:
+    path: ../packages/dart_github_actions_wrappers
+
+dev_dependencies:
+  mocktail: ^0.3.0
+  test: ^1.19.2
+  very_good_analysis: ^3.0.1
