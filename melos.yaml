@@ -1,0 +1,19 @@
+name: dart_github_actions
+
+packages:
+  - packages/**
+
+command:
+  bootstrap:
+    usePubspecOverrides: true
+
+scripts:
+  test_and_report:
+    run: >
+      melos exec -c 1 --fail-fast -- "dart pub global run coverage:test_with_coverage" &&
+      melos exec -c 1 -- coverde remove ./coverage/filtered.lcov.info &&
+      melos exec -c 1 -- coverde filter --input ./coverage/lcov.info --output ./coverage/filtered.lcov.info --filters \.g\.dart,\.freezed\.dart,runner_type\.dart,pull_request_type\.dart &&
+      melos exec -c 1 -- coverde report --input ./coverage/filtered.lcov.info
+    select-package:
+      flutter: false
+      dir-exists: test

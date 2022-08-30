@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/packages\\dart_github_actions/melos_dart_github_actions.iml" filepath="$PROJECT_DIR$/packages\\dart_github_actions/melos_dart_github_actions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages\\dart_github_actions_wrappers/melos_dart_github_actions_wrappers.iml" filepath="$PROJECT_DIR$/packages\\dart_github_actions_wrappers/melos_dart_github_actions_wrappers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/melos_dart_github_actions.iml" filepath="$PROJECT_DIR$/melos_dart_github_actions.iml" />
+    </modules>
+  </component>
+</project>
