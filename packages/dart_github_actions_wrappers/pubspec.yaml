@@ -1,0 +1,16 @@
+name: dart_github_actions_wrappers
+description: A project containing type-safe action wrappers for common Github Actions.
+version: 0.0.1+1
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies: 
+  dart_github_actions:
+    path: ../dart_github_actions
+
+dev_dependencies:
+  mocktail: ^0.3.0
+  test: ^1.19.2
+  very_good_analysis: ^3.0.1
