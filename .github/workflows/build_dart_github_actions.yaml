@@ -12,6 +12,9 @@ on:
       - 'packages/dart_github_actions/**'
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: packages/dart_github_actions
     runs-on: ubuntu-latest
     steps:
       -

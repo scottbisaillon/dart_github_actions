@@ -16,7 +16,13 @@ void main() async {
       )
     ],
     jobs: [
-      Job(id: 'build', runsOn: RunnerType.ubuntuLatest)
+      Job(
+        id: 'build',
+        runsOn: RunnerType.ubuntuLatest,
+        defaults: const Defaults(
+          run: Run(workingDirectory: 'packages/dart_github_actions'),
+        ),
+      )
         ..uses(const CheckoutV3())
         ..uses(const SetupDartV1())
         ..run(
