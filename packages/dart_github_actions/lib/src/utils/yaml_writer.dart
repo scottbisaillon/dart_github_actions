@@ -12,6 +12,7 @@ class YAMLWriter {
   /// {@macro yaml_writer}
   const YAMLWriter();
 
+  /// Recursively writes an object and any nested objects to yaml.
   String write(Object root) {
     final buffer = StringBuffer();
     _write(root, buffer);
@@ -92,7 +93,9 @@ class YAMLWriter {
   }
 }
 
+/// StringBuffer extensions.
 extension StringBufferX on StringBuffer {
+  /// Writes a map key, surrounded in quotes if it contains any spaces.
   void writeMapKey(String key) {
     if (key.contains(' ')) {
       write("'$key'");

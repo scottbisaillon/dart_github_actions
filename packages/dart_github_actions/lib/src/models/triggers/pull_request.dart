@@ -1,4 +1,3 @@
-import 'package:dart_github_actions/src/models/triggers/pull_request_type.dart';
 import 'package:dart_github_actions/src/models/triggers/triggers.dart';
 import 'package:dart_github_actions/src/utils/utils.dart';
 

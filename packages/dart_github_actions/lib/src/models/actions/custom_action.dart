@@ -1,5 +1,4 @@
 import 'package:dart_github_actions/src/models/models.dart';
-import 'package:dart_github_actions/src/utils/utils.dart';
 
 /// {@template custom_action_output}
 /// A simple [ActionOutput] used to expose the outputs of [CustomAction].
@@ -24,10 +23,8 @@ class CustomAction extends ActionWithOutputs<CustomActionOutput> {
   });
 
   /// The inputs of this [Action].
-  final Map<String, String?> inputs;
-
   @override
-  Map<String, String> buildInputs() => inputs.whereNotNull();
+  final Map<String, String?> inputs;
 
   @override
   CustomActionOutput buildOutputObject(String stepId) =>

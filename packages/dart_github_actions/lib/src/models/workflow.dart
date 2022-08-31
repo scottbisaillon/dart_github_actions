@@ -44,7 +44,7 @@ class Workflow implements YAMLObject {
         'jobs': {for (final job in jobs) job.id: job},
       }.whereNotNull();
 
-  /// Writes this [Workflow] as yaml to [targetFileName].
+  /// Writes this [Workflow] as yaml to [targetFile].
   Future<void> writeYamlToFile() async {
     const write = YAMLWriter();
 
