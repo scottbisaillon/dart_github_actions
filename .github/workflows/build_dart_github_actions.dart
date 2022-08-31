@@ -2,12 +2,17 @@ import 'package:dart_github_actions/dart_github_actions.dart';
 import 'package:dart_github_actions_wrappers/dart_github_actions_wrappers.dart';
 
 void main() async {
+  const basePath = 'packages/dart_github_actions';
+
   await Workflow(
     name: 'dart_github_actions',
     on: [
       Push(
         branches: ['master', 'development'],
-        paths: ['packages/dart_github_actions'],
+        paths: [
+          '.github/workflows/build_dart_github_actions.yaml',
+          '$basePath/**',
+        ],
       )
     ],
     jobs: [

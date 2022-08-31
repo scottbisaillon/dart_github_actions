@@ -8,7 +8,8 @@ on:
       - master
       - development
     paths:
-      - packages/dart_github_actions
+      - .github/workflows/build_dart_github_actions.yaml
+      - 'packages/dart_github_actions/**'
 jobs:
   build:
     runs-on: ubuntu-latest
