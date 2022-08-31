@@ -41,7 +41,8 @@ echo "$GITHUB_WORKSPACE/_flutter/bin/cache/dart-sdk/bin" >> "$GITHUB_PATH"
           const VeryGoodCoverageV1(
             path: 'packages/dart_github_actions/coverage/lcov.info',
           ),
-        ),
+        )
+        ..uses(const CodecovActionV3()),
     ],
   ).writeYamlToFile();
 }
