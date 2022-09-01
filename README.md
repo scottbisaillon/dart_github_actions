@@ -78,6 +78,8 @@ Be sure to submit an [issue](https://github.com/scottbisaillon/dart_github_actio
 
 1. Create a `pubspec.yaml` file in your `.github` folder of your project with `dart_github_actions` as a dependency.
 
+**NOTE:** Currently the best way to setup your project to utilize dart_github_actions is to place the `pubspec.yaml` file in your `.github` folder and then open that folder in a new window of Visual Studio Code for the best IDE experience. I have found opening the root folder causes issues with the IDE auto completion and erorr recognition.
+
 
 ```yaml
 # .github/pubspec.yaml
