@@ -12,6 +12,9 @@ class ExpressionContext {
 
   /// {@macro github_context}
   GithubContext get github => const GithubContext();
+
+  /// {@macro env_context}
+  EnvContext get env => const EnvContext();
 }
 
 /// {@template expression}

@@ -1,17 +1,10 @@
 // ignore_for_file: lines_longer_than_80_chars
-
-abstract class _Context {
-  const _Context(this.base);
-
-  final String base;
-
-  String formatProperty(String property) => '$base.$property';
-}
+import 'package:dart_github_actions/src/models/expression/contexts/context.dart';
 
 /// {@template github_context}
 /// Context object containing all properties for the [Github Context](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context).
 /// {@endtemplate}
-class GithubContext extends _Context {
+class GithubContext extends Context {
   /// {@macro github_context}
   const GithubContext() : super('github');
 

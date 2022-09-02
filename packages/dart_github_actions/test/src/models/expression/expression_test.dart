@@ -1,5 +1,10 @@
+import 'package:dart_github_actions/src/models/expression/contexts/env_context.dart';
 import 'package:dart_github_actions/src/models/expression/expression.dart';
 import 'package:test/test.dart';
+
+extension EnvContextX on EnvContext {
+  String get variable => formatProperty('variable');
+}
 
 void main() {
   group('Expression', () {
@@ -227,6 +232,15 @@ void main() {
           Expression((context) => context.github.workspace).toString(),
           equals(r'${{ github.workspace }}'),
         );
+      });
+    });
+
+    group('Env Context', () {
+      test('should allow defining variables by extension method', () {
+        final expression = Expression(
+          (context) => context.env.variable,
+        );
+        expect(expression.toString(), equals(r'${{ env.variable }}'));
       });
     });
   });
