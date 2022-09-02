@@ -1,6 +1,6 @@
 name: dart_github_actions
 description: A project for writing Github Workflows using a type-safe api rather than yaml.
-version: 0.0.1+1
+version: 0.0.2
 homepage: https://github.com/scottbisaillon/dart_github_actions
 repository: https://github.com/scottbisaillon/dart_github_actions
 
