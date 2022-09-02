@@ -1,8 +1,12 @@
-import 'package:dart_github_actions/src/models/expression/contexts/env_context.dart';
+import 'package:dart_github_actions/src/models/expression/contexts/contexts.dart';
 import 'package:dart_github_actions/src/models/expression/expression.dart';
 import 'package:test/test.dart';
 
 extension EnvContextX on EnvContext {
+  String get variable => formatProperty('variable');
+}
+
+extension SecretsContextX on SecretsContext {
   String get variable => formatProperty('variable');
 }
 
@@ -241,6 +245,22 @@ void main() {
           (context) => context.env.variable,
         );
         expect(expression.toString(), equals(r'${{ env.variable }}'));
+      });
+    });
+
+    group('Secrets Context', () {
+      test('should format secrets.githubToken correctly', () {
+        expect(
+          Expression((context) => context.secrets.githubToken).toString(),
+          equals(r'${{ secrets.GITHUB_TOKEN }}'),
+        );
+      });
+
+      test('should allow defining variables by extension method', () {
+        final expression = Expression(
+          (context) => context.secrets.variable,
+        );
+        expect(expression.toString(), equals(r'${{ secrets.variable }}'));
       });
     });
   });
