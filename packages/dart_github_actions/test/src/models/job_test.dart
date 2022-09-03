@@ -103,6 +103,41 @@ steps:
           ),
         );
       });
+
+      test('should omit CustomAction inputs when empty', () {
+        const yamlWriter = YAMLWriter();
+        final job = Job(
+          id: 'job-1',
+          runsOn: RunnerType.ubuntuLatest,
+          steps: const [
+            CommandStep(id: 'step-1', command: 'echo something'),
+            ActionStep(
+              id: 'step-2',
+              action: CustomAction(
+                actionOwner: 'actionOwner',
+                actionName: 'actionName',
+                actionVersion: 'v1',
+              ),
+            )
+          ],
+        );
+        final yaml = yamlWriter.write(job);
+        expect(
+          yaml,
+          equals(
+            '''
+runs-on: ubuntu-latest
+steps:
+  -
+    id: step-1
+    run: echo something
+  -
+    id: step-2
+    uses: actionOwner/actionName@v1
+''',
+          ),
+        );
+      });
     });
   });
 }

@@ -19,7 +19,7 @@ class CustomAction extends ActionWithOutputs<CustomActionOutput> {
     required super.actionOwner,
     required super.actionName,
     required super.actionVersion,
-    required this.inputs,
+    this.inputs = const {},
   });
 
   /// The inputs of this [Action].
