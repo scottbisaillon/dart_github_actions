@@ -27,7 +27,6 @@ void main() async {
             actionOwner: 'actions',
             actionName: 'checkout',
             actionVersion: 'v3',
-            inputs: {},
           ),
         )
         ..uses(
@@ -35,7 +34,6 @@ void main() async {
             actionOwner: 'dart-lang',
             actionName: 'setup-dart',
             actionVersion: 'v1',
-            inputs: {},
           ),
         )
         ..run('dart pub get', name: 'Install Dependencies')
