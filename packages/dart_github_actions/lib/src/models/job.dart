@@ -76,24 +76,28 @@ class Job implements YAMLObject {
 /// [Job] extension methods for adding [CommandStep] and [ActionStep]s.
 extension JobX on Job {
   /// Adds an [ActionStep] to the [Job]s steps.
-  void uses(Action action, {String? id, String? name}) {
-    steps.add(
-      ActionStep(
-        id: id ?? 'step-${steps.length}',
-        name: name,
-        action: action,
-      ),
-    );
+  void uses(Action action, {String? id, String? name, bool condition = true}) {
+    if (condition) {
+      steps.add(
+        ActionStep(
+          id: id ?? 'step-${steps.length}',
+          name: name,
+          action: action,
+        ),
+      );
+    }
   }
 
   /// Adds an [CommandStep] to the [Job]s steps.
-  void run(String command, {String? id, String? name}) {
-    steps.add(
-      CommandStep(
-        id: id ?? 'step-${steps.length}',
-        name: name,
-        command: command,
-      ),
-    );
+  void run(String command, {String? id, String? name, bool condition = true}) {
+    if (condition) {
+      steps.add(
+        CommandStep(
+          id: id ?? 'step-${steps.length}',
+          name: name,
+          command: command,
+        ),
+      );
+    }
   }
 }
