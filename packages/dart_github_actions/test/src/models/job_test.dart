@@ -138,6 +138,32 @@ steps:
           ),
         );
       });
+
+      test('should write needs list using job ids', () {
+        final job1 = Job(id: 'job-1', runsOn: RunnerType.ubuntuLatest);
+        final job2 = Job(id: 'job-2', runsOn: RunnerType.ubuntuLatest);
+        final job3 = Job(
+          id: 'job-3',
+          runsOn: RunnerType.ubuntuLatest,
+          needs: [job1, job2],
+        )..run('echo something');
+        const yamlWriter = YAMLWriter();
+
+        final yaml = yamlWriter.write(job3);
+        expect(
+          yaml,
+          equals(
+            '''
+needs: [job-1, job-2]
+runs-on: ubuntu-latest
+steps:
+  -
+    id: step-0
+    run: echo something
+''',
+          ),
+        );
+      });
     });
   });
 }

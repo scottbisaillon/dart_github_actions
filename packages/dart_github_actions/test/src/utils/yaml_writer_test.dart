@@ -130,5 +130,19 @@ list:
         ),
       );
     });
+
+    test('should write YamlStringList', () {
+      final output = writer.write({
+        'string-list': YamlStringList(['one', 'two'])
+      });
+      expect(
+        output,
+        equals(
+          '''
+string-list: [one, two]
+''',
+        ),
+      );
+    });
   });
 }

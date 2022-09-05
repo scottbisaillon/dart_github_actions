@@ -1,5 +1,5 @@
+import 'package:dart_github_actions/src/dart_github_actions.dart';
 import 'package:dart_github_actions/src/models/expression/contexts/contexts.dart';
-import 'package:dart_github_actions/src/models/expression/expression.dart';
 import 'package:test/test.dart';
 
 extension EnvContextX on EnvContext {
@@ -8,6 +8,12 @@ extension EnvContextX on EnvContext {
 
 extension SecretsContextX on SecretsContext {
   String get variable => formatProperty('variable');
+}
+
+class SimpleJobOutput extends JobOutput {
+  SimpleJobOutput(super.jobId);
+
+  String get output1 => formatOutput('output1');
 }
 
 void main() {
@@ -261,6 +267,28 @@ void main() {
           (context) => context.secrets.variable,
         );
         expect(expression.toString(), equals(r'${{ secrets.variable }}'));
+      });
+    });
+
+    group('Needs Context', () {
+      test('should format job output correctly', () {
+        final job = JobWithOutput(
+          id: 'job1',
+          runsOn: RunnerType.ubuntuLatest,
+          buildOutput: SimpleJobOutput.new,
+        );
+        expect(
+          Expression((context) => context.needs.job(job).output1).toString(),
+          equals(r'${{ needs.job1.outputs.output1 }}'),
+        );
+      });
+
+      test('should format job result correctly', () {
+        final job = Job(id: 'job1', runsOn: RunnerType.ubuntuLatest);
+        expect(
+          Expression((context) => context.needs.result(job)).toString(),
+          equals(r'${{ needs.job1.result }}'),
+        );
       });
     });
   });

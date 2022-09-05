@@ -5,6 +5,17 @@ mixin YAMLObject {
   Map<String, dynamic> toYaml();
 }
 
+/// {@template yaml_string_list}
+/// A string list representation that will be written as [string1, string2].
+/// {@endtemplate}
+class YamlStringList {
+  /// {@macro yaml_string_list}
+  YamlStringList(this.list);
+
+  /// The actual list.
+  final List<String> list;
+}
+
 /// {@template yaml_writer}
 /// A serializer for writing objects in yaml format.
 /// {@endtemplate}
@@ -53,6 +64,8 @@ class YAMLWriter {
       _writeMap(node, sb, currentIndent: currentIndent);
     } else if (node is List) {
       _writeList(node, sb, currentIndent: currentIndent);
+    } else if (node is YamlStringList) {
+      _writeYamlStringList(node, sb);
     } else if (node is YAMLObject) {
       _writeMap(node.toYaml(), sb, currentIndent: currentIndent);
     }
@@ -91,6 +104,17 @@ class YAMLWriter {
       _write(entry as Object, sb, currentIndent: nextIndent);
     }
   }
+}
+
+void _writeYamlStringList(YamlStringList list, StringBuffer sb) {
+  sb.write(' [');
+  for (var i = 0; i < list.list.length; i++) {
+    sb.write(list.list[i]);
+    if (i != list.list.length - 1) {
+      sb.write(', ');
+    }
+  }
+  sb.write(']\n');
 }
 
 /// StringBuffer extensions.

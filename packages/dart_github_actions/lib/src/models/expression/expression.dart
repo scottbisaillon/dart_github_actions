@@ -18,6 +18,9 @@ class ExpressionContext {
 
   /// {@macro secrets_context}
   SecretsContext get secrets => const SecretsContext();
+
+  /// {@macro needs_context}
+  NeedsContext get needs => const NeedsContext();
 }
 
 /// {@template expression}

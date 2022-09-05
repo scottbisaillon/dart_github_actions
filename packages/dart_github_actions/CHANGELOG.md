@@ -1,3 +1,7 @@
+## 0.3.0
+- Add Job Outputs
+- Add Needs context to Expressions
+
 ## 0.2.1
 - Fix README and LICENSE files
 - Add `condition` parameter to `Job.uses` and `Job.run` extension methods for conditionally adding steps

@@ -44,6 +44,7 @@ class Job implements YAMLObject {
   Job({
     required this.id,
     this.name,
+    this.needs,
     this.defaults,
     required this.runsOn,
     List<Step>? steps,
@@ -61,6 +62,9 @@ class Job implements YAMLObject {
   /// The type of machine to run this [Job] on.
   final RunnerType runsOn;
 
+  /// Any jobs that must complete successfully before this job will run.
+  final List<Job>? needs;
+
   /// The list of steps to run as a part of this [Job].
   final List<Step> steps;
 
@@ -68,9 +72,46 @@ class Job implements YAMLObject {
   Map<String, dynamic> toYaml() => {
         'name': name,
         'defaults': defaults,
+        'needs': needs != null
+            ? YamlStringList(needs!.map((e) => e.id).toList())
+            : null,
         'runs-on': runsOn.label,
         'steps': steps,
       }.whereNotNull();
+}
+
+/// {@template job_output}
+/// The base for all [Job] outputs.
+/// {@endtemplate}
+abstract class JobOutput {
+  /// {@macro action_output}
+  const JobOutput(this.jobId);
+
+  /// The id of the step this [Action] is associated
+  final String jobId;
+
+  /// Formats the output with correct accessor given the [jobId].
+  String formatOutput(String output) => 'needs.$jobId.outputs.$output';
+}
+
+/// {@template job_with_output}
+/// A [Job] that exposes one ore more outputs that can be used in another [Job].
+///
+/// see: https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs.
+/// {@endtemplate}
+class JobWithOutput<T extends JobOutput> extends Job {
+  /// {@macro job_with_outputs}
+  JobWithOutput({
+    required super.id,
+    required super.runsOn,
+    required this.buildOutput,
+  });
+
+  /// A builder function for the job's output.
+  T Function(String jobId) buildOutput;
+
+  /// Getter for this [Job]'s output given its [id].
+  T get output => buildOutput(id);
 }
 
 /// [Job] extension methods for adding [CommandStep] and [ActionStep]s.
