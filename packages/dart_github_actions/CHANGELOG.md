@@ -1,3 +1,8 @@
+## 0.4.0
+- Add ability to define output map for a Job
+- Add Step outputs
+- add Step context to Expressions
+
 ## 0.3.0
 - Add Job Outputs
 - Add Needs context to Expressions
