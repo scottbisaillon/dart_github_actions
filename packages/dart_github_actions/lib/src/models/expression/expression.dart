@@ -21,6 +21,9 @@ class ExpressionContext {
 
   /// {@macro needs_context}
   NeedsContext get needs => const NeedsContext();
+
+  /// {@macro steps_context}
+  StepsContext get steps => const StepsContext();
 }
 
 /// {@template expression}

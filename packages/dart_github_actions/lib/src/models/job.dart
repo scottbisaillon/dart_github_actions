@@ -104,14 +104,33 @@ class JobWithOutput<T extends JobOutput> extends Job {
   JobWithOutput({
     required super.id,
     required super.runsOn,
+    super.needs,
+    required this.outputs,
     required this.buildOutput,
   });
 
+  /// The outputs of this [Job.]
+  ///
+  /// see: https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
+  final Map<String, String> outputs;
+
   /// A builder function for the job's output.
-  T Function(String jobId) buildOutput;
+  final T Function(String jobId) buildOutput;
 
   /// Getter for this [Job]'s output given its [id].
   T get output => buildOutput(id);
+
+  @override
+  Map<String, dynamic> toYaml() => {
+        'name': name,
+        'defaults': defaults,
+        'outputs': outputs,
+        'needs': needs != null
+            ? YamlStringList(needs!.map((e) => e.id).toList())
+            : null,
+        'runs-on': runsOn.label,
+        'steps': steps,
+      }.whereNotNull();
 }
 
 /// [Job] extension methods for adding [CommandStep] and [ActionStep]s.
@@ -119,7 +138,7 @@ extension JobX on Job {
   /// Adds an [ActionStep] to the [Job]s steps.
   void uses(Action action, {String? id, String? name, bool condition = true}) {
     if (condition) {
-      steps.add(
+      usesAction(
         ActionStep(
           id: id ?? 'step-${steps.length}',
           name: name,
@@ -129,16 +148,29 @@ extension JobX on Job {
     }
   }
 
+  /// Adds the [actionStep] to the [Job]s steps.
+  void usesAction(ActionStep actionStep, {bool condition = true}) {
+    if (condition) {
+      steps.add(actionStep);
+    }
+  }
+
   /// Adds an [CommandStep] to the [Job]s steps.
   void run(String command, {String? id, String? name, bool condition = true}) {
+    runCommandStep(
+      CommandStep(
+        id: id ?? 'step-${steps.length}',
+        name: name,
+        command: command,
+      ),
+      condition: condition,
+    );
+  }
+
+  /// Adds the [step] to the [Job]s steps.
+  void runCommandStep(CommandStep step, {bool condition = true}) {
     if (condition) {
-      steps.add(
-        CommandStep(
-          id: id ?? 'step-${steps.length}',
-          name: name,
-          command: command,
-        ),
-      );
+      steps.add(step);
     }
   }
 }

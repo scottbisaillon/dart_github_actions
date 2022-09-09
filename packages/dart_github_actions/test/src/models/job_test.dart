@@ -2,6 +2,18 @@ import 'package:dart_github_actions/src/dart_github_actions.dart';
 import 'package:dart_github_actions/src/utils/utils.dart';
 import 'package:test/test.dart';
 
+class SimpleJobOutput extends JobOutput {
+  SimpleJobOutput(super.jobId);
+
+  String get output1 => formatOutput('output1');
+}
+
+class SimpleStepOutput extends StepOutput {
+  SimpleStepOutput(super.stepId);
+
+  String get output1 => formatOutput('output1');
+}
+
 void main() {
   group('Job', () {
     test('adds steps with generated ids', () {
@@ -164,6 +176,82 @@ steps:
           ),
         );
       });
+
+      test('should write job output', () {
+        const commandStep = CommandStepWithOutput<SimpleStepOutput>(
+          id: 'step1',
+          command: 'echo something',
+          buildOutput: SimpleStepOutput.new,
+        );
+
+        final job = JobWithOutput(
+          id: 'job1',
+          runsOn: RunnerType.ubuntuLatest,
+          outputs: {
+            'output1': Expression(
+              (context) => context.steps.step(commandStep).output1,
+            ).toString()
+          },
+          buildOutput: SimpleJobOutput.new,
+        )..run('echo something');
+        final yaml = const YAMLWriter().write(job);
+        expect(
+          yaml,
+          equals(
+            r'''
+outputs:
+  output1: ${{ steps.step1.outputs.output1 }}
+runs-on: ubuntu-latest
+steps:
+  -
+    id: step-0
+    run: echo something
+''',
+          ),
+        );
+      });
+    });
+  });
+
+  group('JobWithOutput', () {
+    test('should write needs list using job ids', () {
+      final job1 = JobWithOutput<SimpleJobOutput>(
+        id: 'job-1',
+        runsOn: RunnerType.ubuntuLatest,
+        outputs: {'output1': 'anything'},
+        buildOutput: SimpleJobOutput.new,
+      );
+      final job2 = JobWithOutput<SimpleJobOutput>(
+        id: 'job-2',
+        runsOn: RunnerType.ubuntuLatest,
+        outputs: {'output1': 'anything'},
+        buildOutput: SimpleJobOutput.new,
+      );
+      final job3 = JobWithOutput<SimpleJobOutput>(
+        id: 'job-3',
+        runsOn: RunnerType.ubuntuLatest,
+        needs: [job1, job2],
+        outputs: {'output1': 'anything'},
+        buildOutput: SimpleJobOutput.new,
+      )..run('echo something');
+      const yamlWriter = YAMLWriter();
+
+      final yaml = yamlWriter.write(job3);
+      expect(
+        yaml,
+        equals(
+          '''
+outputs:
+  output1: anything
+needs: [job-1, job-2]
+runs-on: ubuntu-latest
+steps:
+  -
+    id: step-0
+    run: echo something
+''',
+        ),
+      );
     });
   });
 }

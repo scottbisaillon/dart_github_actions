@@ -1,3 +1,4 @@
+import 'package:dart_github_actions/dart_github_actions.dart';
 import 'package:dart_github_actions/src/dart_github_actions.dart';
 import 'package:dart_github_actions/src/models/expression/contexts/contexts.dart';
 import 'package:test/test.dart';
@@ -12,6 +13,12 @@ extension SecretsContextX on SecretsContext {
 
 class SimpleJobOutput extends JobOutput {
   SimpleJobOutput(super.jobId);
+
+  String get output1 => formatOutput('output1');
+}
+
+class SimpleStepOutput extends StepOutput {
+  SimpleStepOutput(super.stepId);
 
   String get output1 => formatOutput('output1');
 }
@@ -272,9 +279,20 @@ void main() {
 
     group('Needs Context', () {
       test('should format job output correctly', () {
+        const commandStep = CommandStepWithOutput<SimpleStepOutput>(
+          id: 'step1',
+          command: 'echo something',
+          buildOutput: SimpleStepOutput.new,
+        );
+
         final job = JobWithOutput(
           id: 'job1',
           runsOn: RunnerType.ubuntuLatest,
+          outputs: {
+            'output': Expression(
+              (context) => context.steps.step(commandStep).output1,
+            ).toString()
+          },
           buildOutput: SimpleJobOutput.new,
         );
         expect(
@@ -288,6 +306,20 @@ void main() {
         expect(
           Expression((context) => context.needs.result(job)).toString(),
           equals(r'${{ needs.job1.result }}'),
+        );
+      });
+    });
+
+    group('Steps Context', () {
+      test('should format step ouput correctly', () {
+        const step = CommandStepWithOutput<SimpleStepOutput>(
+          id: 'step-1',
+          command: 'ehco something',
+          buildOutput: SimpleStepOutput.new,
+        );
+        expect(
+          Expression((context) => context.steps.step(step).output1).toString(),
+          equals(r'${{ steps.step-1.outputs.output1 }}'),
         );
       });
     });
