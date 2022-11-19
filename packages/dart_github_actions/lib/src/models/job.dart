@@ -47,6 +47,7 @@ class Job implements YAMLObject {
     this.needs,
     this.defaults,
     required this.runsOn,
+    this.env,
     List<Step>? steps,
   }) : steps = steps ?? [];
 
@@ -62,6 +63,9 @@ class Job implements YAMLObject {
   /// The type of machine to run this [Job] on.
   final RunnerType runsOn;
 
+  /// The map of environment variables for this [Job].
+  final Map<String, String>? env;
+
   /// Any jobs that must complete successfully before this job will run.
   final List<Job>? needs;
 
@@ -76,6 +80,7 @@ class Job implements YAMLObject {
             ? YamlStringList(needs!.map((e) => e.id).toList())
             : null,
         'runs-on': runsOn.label,
+        'env': env,
         'steps': steps,
       }.whereNotNull();
 }
@@ -105,6 +110,7 @@ class JobWithOutput<T extends JobOutput> extends Job {
     required super.id,
     required super.runsOn,
     super.needs,
+    super.env,
     required this.outputs,
     required this.buildOutput,
   });

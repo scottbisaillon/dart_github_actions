@@ -1,3 +1,6 @@
+## 0.5.0
+- Add `env` parameters to Workflows and Jobs
+
 ## 0.4.0
 - Add ability to define output map for a Job
 - Add Step outputs

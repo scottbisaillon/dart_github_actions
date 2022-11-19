@@ -12,6 +12,7 @@ class Workflow implements YAMLObject {
     File? targetFile,
     required this.name,
     required this.on,
+    this.env,
     required this.jobs,
   })  : assert(on.isNotEmpty, 'At least one trigger must be defined.'),
         assert(jobs.isNotEmpty, 'At least one job must be defined.'),
@@ -34,6 +35,9 @@ class Workflow implements YAMLObject {
   /// The list of triggers for this [Workflow].
   final List<Trigger> on;
 
+  /// The map of environment variables for this [Workflow].
+  final Map<String, String>? env;
+
   /// The list of [Job]s that will run in this [Workflow].
   final List<Job> jobs;
 
@@ -41,6 +45,7 @@ class Workflow implements YAMLObject {
   Map<String, dynamic> toYaml() => {
         'name': name,
         'on': {for (final trigger in on) trigger.label: trigger},
+        'env': env,
         'jobs': {for (final job in jobs) job.id: job},
       }.whereNotNull();
 

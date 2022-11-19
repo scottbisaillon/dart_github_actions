@@ -55,6 +55,10 @@ void main() {
         final job = Job(
           id: 'job-1',
           runsOn: RunnerType.ubuntuLatest,
+          env: {
+            'VARIABLE_1': 'VALUE_1',
+            'VARIABLE_2': 'VALUE_2',
+          },
           steps: const [
             CommandStep(id: 'step-1', command: 'echo something'),
             ActionStep(
@@ -74,6 +78,9 @@ void main() {
           equals(
             '''
 runs-on: ubuntu-latest
+env:
+  VARIABLE_1: VALUE_1
+  VARIABLE_2: VALUE_2
 steps:
   -
     id: step-1

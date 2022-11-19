@@ -203,6 +203,10 @@ jobs:
             on: [
               Push(branches: ['branch1'])
             ],
+            env: {
+              'VARIABLE_1': 'VALUE_1',
+              'VARIABLE_2': 'VALUE_2',
+            },
             jobs: [
               Job(
                 id: 'build',
@@ -234,6 +238,9 @@ on:
   push:
     branches:
       - branch1
+env:
+  VARIABLE_1: VALUE_1
+  VARIABLE_2: VALUE_2
 jobs:
   build:
     runs-on: ubuntu-latest
